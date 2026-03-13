@@ -1,8 +1,9 @@
 # SaaS Access Auditor
 
+**A Lumenstack product**  
 **Find wasted SaaS spend, risky access, and messy account hygiene before they become expensive.**
 
-SaaS Access Auditor is a CSV-first micro-SaaS that helps companies uncover hidden waste in software licenses, identify risky access, and clean up account chaos across their SaaS stack.
+SaaS Access Auditor is a CSV-first micro-SaaS built by **Lumenstack** to help companies uncover hidden waste in software licenses, identify risky access, and clean up account chaos across their SaaS stack.
 
 Instead of starting with heavy integrations, complex setup, and enterprise friction, the MVP starts simple:
 
@@ -10,6 +11,14 @@ Upload your exports.
 Match users by email.  
 Run the audit.  
 See where money is leaking and where access became a risk.
+
+---
+
+## About Lumenstack
+
+**Lumenstack** builds lightweight SaaS tools focused on operational clarity, access visibility, and smarter decision-making across modern software stacks.
+
+SaaS Access Auditor is the first product in that vision.
 
 ---
 
@@ -141,9 +150,9 @@ They assume:
 - enterprise budget
 - patience for complex rollout
 
-This project goes in the opposite direction.
+This product goes in the opposite direction.
 
-**SaaS Access Auditor starts lightweight and useful.**
+**SaaS Access Auditor, by Lumenstack, starts lightweight and useful.**
 
 No heavy enterprise motion.  
 No dependency on OAuth at day one.  
@@ -222,9 +231,9 @@ Current planned stack:
 
 ## Current status
 
-This repository is being built as the MVP foundation for SaaS Access Auditor.
+This repository contains the MVP foundation for **SaaS Access Auditor**, a product by **Lumenstack**.
 
-The project roadmap is organized in sprints, starting with:
+The roadmap is organized in sprints, starting with:
 
 - Sprint 0 → product definition, flow, wireframes, rules, base structure
 - Sprint 1 → auth, audits, uploads, storage, base UX
@@ -234,7 +243,9 @@ The project roadmap is organized in sprints, starting with:
 
 ## Vision
 
-The long-term vision is to become a lightweight SaaS waste and access intelligence tool for companies that need clarity before they need enterprise complexity.
+The long-term vision of **Lumenstack** is to build lightweight SaaS intelligence tools that help companies gain visibility and control without enterprise-level complexity.
+
+SaaS Access Auditor is the first step in that direction.
 
 Start simple.  
 Find the leaks.  
@@ -244,7 +255,10 @@ Clean the mess.
 
 ---
 
-## Working title / positioning
+## Positioning
+
+**Lumenstack**  
+*Lightweight SaaS visibility tools for modern teams.*
 
 **SaaS Access Auditor**  
 *The hidden waste and access risk detector inside your SaaS stack.*
@@ -282,7 +296,7 @@ Possible future directions after MVP:
 
 ## Summary
 
-SaaS Access Auditor helps companies answer a simple but expensive question:
+**SaaS Access Auditor**, built by **Lumenstack**, helps companies answer a simple but expensive question:
 
 **Where are we wasting money, keeping risky access, and losing control of our SaaS accounts?**
 
