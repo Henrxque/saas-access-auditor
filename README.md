@@ -1,5 +1,7 @@
 # SaaS Access Auditor
-![Lumenstack Logo](./logo.png)
+<p align="center">
+  <img src="./Lumenstack-Logo.png" alt="Lumenstack Logo" width="250" />
+</p>
 **A Lumenstack product**  
 **Find wasted SaaS spend, risky access, and messy account hygiene before they become expensive.**
 
