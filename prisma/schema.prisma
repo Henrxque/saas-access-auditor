@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuditStatus {
+  DRAFT
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum IssueCategory {
+  ACCESS
+  PERMISSION
+  LICENSE
+  CONFIGURATION
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ExportJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ExportType {
+  CSV
+  PDF
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum UploadedFileType {
+  USERS
+  GROUPS
+  PERMISSIONS
+  ACCESS_LOG
+  OTHER
+}
+
+model User {
+  id          String            @id @default(cuid())
+  email       String            @unique
+  name        String?
+  memberships WorkspaceMember[]
+  exportJobs  ExportJob[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model Workspace {
+  id          String            @id @default(cuid())
+  name        String
+  members     WorkspaceMember[]
+  audits      Audit[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole @default(MEMBER)
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime      @default(now())
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
+model Audit {
+  id                String             @id @default(cuid())
+  workspaceId       String
+  name              String
+  status            AuditStatus        @default(DRAFT)
+  workspace         Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  uploadedFiles     UploadedFile[]
+  mappedColumns     MappedColumn[]
+  normalizedRecords NormalizedRecord[]
+  issues            Issue[]
+  scores            Score[]
+  exportJobs        ExportJob[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([workspaceId])
+}
+
+model UploadedFile {
+  id           String           @id @default(cuid())
+  auditId      String
+  filename     String
+  storagePath  String
+  fileType     UploadedFileType
+  audit        Audit            @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  mappedCols   MappedColumn[]
+  records      NormalizedRecord[]
+  createdAt    DateTime         @default(now())
+
+  @@index([auditId])
+}
+
+model MappedColumn {
+  id             String       @id @default(cuid())
+  auditId        String
+  uploadedFileId String?
+  sourceColumn   String
+  targetField    String
+  audit          Audit        @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  uploadedFile   UploadedFile? @relation(fields: [uploadedFileId], references: [id], onDelete: SetNull)
+  createdAt      DateTime     @default(now())
+
+  @@index([auditId])
+  @@index([uploadedFileId])
+}
+
+model NormalizedRecord {
+  id             String        @id @default(cuid())
+  auditId        String
+  uploadedFileId String?
+  externalId     String?
+  data           Json
+  audit          Audit         @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  uploadedFile   UploadedFile? @relation(fields: [uploadedFileId], references: [id], onDelete: SetNull)
+  createdAt      DateTime      @default(now())
+
+  @@index([auditId])
+  @@index([uploadedFileId])
+}
+
+model Issue {
+  id          String        @id @default(cuid())
+  auditId     String
+  title       String
+  description String?
+  category    IssueCategory
+  severity    Severity
+  status      String?
+  audit       Audit         @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([auditId])
+}
+
+model Score {
+  id        String   @id @default(cuid())
+  auditId   String
+  key       String
+  value     Float
+  maxValue  Float?
+  audit     Audit    @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([auditId])
+}
+
+model ExportJob {
+  id          String          @id @default(cuid())
+  auditId     String
+  requestedBy String?
+  type        ExportType
+  status      ExportJobStatus @default(PENDING)
+  fileUrl     String?
+  audit       Audit           @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  requester   User?           @relation(fields: [requestedBy], references: [id], onDelete: SetNull)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([auditId])
+  @@index([requestedBy])
+}
